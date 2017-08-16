@@ -5,6 +5,10 @@ set softtabstop=4               "Insert 4 spaces when tab is pressed
 set shiftwidth=4                "An indent is 4 spaces
 set shiftround                  "Round indent to nearest shiftwidth multiple
 
+" fix backspace in windows
+set backspace=2
+set backspace=indent,eol,start
+
 " code folding options
 " use 'zc' to close and 'zo' to open. 'zM' to close all and 'zR' to open all
 " lines with equal indent form a fold
@@ -15,7 +19,6 @@ set nofoldenable
 map <C-n> :NERDTreeToggle<CR>
 " The default <leader> is backslash (\)
 map <Leader>r :NERDTreeFind<CR>
-
 
 " Set utf8 as standard encoding
 set encoding=utf8
@@ -29,9 +32,8 @@ set novisualbell
 set vb t_vb=
 set tm=500
 
-" Always display the status line. Not needed as the Airline plugin provides
-" this
-"set laststatus=2
+" Always display the status line. 
+set laststatus=2
 " Always display the tab line
 set showtabline=2
 
@@ -66,6 +68,10 @@ fun! CleanExtraSpaces()
     call setpos('.', save_cursor)
     call setreg('/', old_query)
 endfun
+
+if has("autocmd")
+    autocmd BufWritePre *.txt, *.hs, *.md :call CleanExtraSpaces()
+endif
 
 " This snippet installs the vim_plug plugin manager
 if empty(glob('~/.vim/autoload/plug.vim'))
